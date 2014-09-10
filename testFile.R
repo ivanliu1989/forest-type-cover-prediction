@@ -3,10 +3,10 @@
     library(caret);library(data.table)
     dir()
 # Load data
-    system.time(train <- fread(dir()[6]))
-    system.time(test <- fread(dir()[3]))
+    system.time(train <- fread("train.csv"))
+    system.time(test <- fread("test.csv"))
     test$Cover_Type <- NA
-    sample <- fread(dir()[1])
+    sample <- fread("sampleSubmission.csv")
 # Preprocessing data
     str(train)
     str(test)
@@ -30,7 +30,7 @@
     fancyRpartPlot(fit1)
 # Predict model
     pred1 <- predict(fit1,test)
-    pred1.output <- data.frame(Id=test$Id, Cover_Type=pred1)
+    pred1.output <- data.frame(Id=test$Id, Cover_Type=round(pred1,digits = 0))
     head(pred1.output)
     table(pred1.output$Cover_Type)
     table(train$Cover_Type)
