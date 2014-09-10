@@ -28,6 +28,8 @@
     summary(fit1)
 # Predict model
     pred1 <- predict(fit1,test)
-    pred1.output <- data.frame(Id=test$Id, Cover_Type=pred1, rownames=F)
-    head(pred1)
-
+    pred1.output <- data.frame(Id=test$Id, Cover_Type=pred1)
+    head(pred1.output)
+    table(pred1.output$Cover_Type)
+    table(train$Cover_Type)
+    write.table(pred1.output, "pred1.csv",sep = ",",row.names = F)
