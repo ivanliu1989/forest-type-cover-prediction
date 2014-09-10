@@ -1,5 +1,5 @@
 # Setup env
-    setwd("/Users/ivan/Documents/wd/ForestType")
+    setwd("/Users/ivan/Work_directory/ForestType")
     library(caret);library(data.table)
     dir()
 # Load data
@@ -20,5 +20,6 @@
 # Plotting data
     plot(Cover_Type,Elevation)
 # Train the model
-    fit <- train(Cover_Type~., method="rf",data = train)
-
+    fit1 <- train(Cover_Type~., method="rpart",data = train)
+    fit2 <- train(Cover_Type~., method="rf",data = train)
+    fit3 <- svm()
