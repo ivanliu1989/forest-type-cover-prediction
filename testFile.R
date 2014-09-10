@@ -10,16 +10,22 @@
     str(train)
     str(test)
     head(sample)
+# Missing value
+    sum(is.na(train))
 # Detect near zero variance
     nzv <- nearZeroVar(train,saveMetrics = T)
     str(nzv,vec.len = 2)
 # Find linear combos
-    attach(train)
     fc <- findLinearCombos(train)
     fc
 # Plotting data
-    plot(Cover_Type,Elevation)
+    plot(train$Cover_Type,train$Elevation)
 # Train the model
     fit1 <- train(Cover_Type~., method="rpart",data = train)
     fit2 <- train(Cover_Type~., method="rf",data = train)
     fit3 <- svm()
+    summary(fit1)
+# Predict model
+    pred1 <- predict(fit1,train)
+    pred1
+    train$Cover_Type
