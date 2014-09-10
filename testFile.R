@@ -26,6 +26,8 @@
     fit2 <- train(Cover_Type~., method="rf",data = train)
     fit3 <- svm()
     summary(fit1)
+    require(rattle)
+    fancyRpartPlot(fit1)
 # Predict model
     pred1 <- predict(fit1,test)
     pred1.output <- data.frame(Id=test$Id, Cover_Type=pred1)
