@@ -106,7 +106,7 @@ x_vars = setdiff(names(train),c("Cover_Type"))
 
 # Define the range of values over which we would want to cross-validate our model
 Grid <-  expand.grid(
-                    n.trees = c(500),
+                    n.trees = c(1000),
                     interaction.depth = c(22) ,
                     shrinkage = 0.2)
 
@@ -189,4 +189,4 @@ GBMpredTest = predict(GBMmodel, newdata = test[,x_vars])
 
 # Create file for submission
 submission = data.frame(Id = test$Id, Cover_Type = as.character(gsub("Seg", "", GBMpredTest)))
-write.csv(submission, "pred2.csv", row.names=FALSE)
+write.csv(submission, "pred3.csv", row.names=FALSE)
