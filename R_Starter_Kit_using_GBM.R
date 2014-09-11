@@ -8,15 +8,23 @@ setwd("/Users/ivan/Work_directory/forest-type-cover-prediction")
 rm(list = ls(all = TRUE))
 gc()
 
-library(caret)
+library(caret); library(data.table)
 
 # Load Training data
-train = read.csv("train.csv")
+train = fread("train.csv")
 
 # Look at data types
 str(train)
 
 # Change data types of categorical variables
+cols <- colnames(train)[12:56]
+class(cols)
+train.new <- train
+train.new[,.SDcols=12:56] <- train.new[,lapply(.SD, as.factor),.SDcols=12:56]
+class(train.new$Id)
+class(train.new$Wilderness_Area1)
+colnames(train.new)
+
 train$Wilderness_Area1=as.factor(train$Wilderness_Area1)
 train$Wilderness_Area2=as.factor(train$Wilderness_Area2)
 train$Wilderness_Area3=as.factor(train$Wilderness_Area3)
@@ -128,7 +136,7 @@ confusionMatrix(GBMpredTrain, train$Cover_Type)
 #####################################################
 
 # Load Test data
-test = read.csv("test.csv")
+test = fread("test.csv")
 
 # Change data types
 test$Wilderness_Area1=as.factor(test$Wilderness_Area1)
