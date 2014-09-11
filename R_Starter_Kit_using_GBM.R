@@ -11,19 +11,19 @@ gc()
 library(caret); library(data.table)
 
 # Load Training data
-train = fread("train.csv")
+train = read.csv("train.csv")
 
 # Look at data types
 str(train)
 
 # Change data types of categorical variables
-cols <- colnames(train)[12:56]
-class(cols)
-train.new <- train
-train.new[,.SDcols=12:56] <- train.new[,lapply(.SD, as.factor),.SDcols=12:56]
-class(train.new$Id)
-class(train.new$Wilderness_Area1)
-colnames(train.new)
+    # cols <- colnames(train)[12:56]
+    # class(cols)
+    # train.new <- train
+    # train.new[,.SDcols=12:56] <- train.new[,lapply(.SD, as.factor),.SDcols=12:56]
+    # class(train.new$Id)
+    # class(train.new$Wilderness_Area1)
+    # colnames(train.new)
 
 train$Wilderness_Area1=as.factor(train$Wilderness_Area1)
 train$Wilderness_Area2=as.factor(train$Wilderness_Area2)
@@ -106,7 +106,7 @@ x_vars = setdiff(names(train),c("Cover_Type"))
 
 # Define the range of values over which we would want to cross-validate our model
 Grid <-  expand.grid(
-                    n.trees = c(250),
+                    n.trees = c(500),
                     interaction.depth = c(22) ,
                     shrinkage = 0.2)
 
@@ -114,7 +114,7 @@ Grid <-  expand.grid(
 fitControl <- trainControl(method = "none", classProbs = TRUE)
 
 # Initialize randomization seed
-set.seed(1805)	
+set.seed(1234)	
 
 
 GBMmodel <- train(Cover_Type ~ .,
