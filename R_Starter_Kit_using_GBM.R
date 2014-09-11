@@ -136,7 +136,7 @@ confusionMatrix(GBMpredTrain, train$Cover_Type)
 #####################################################
 
 # Load Test data
-test = fread("test.csv")
+test = read.csv("test.csv")
 
 # Change data types
 test$Wilderness_Area1=as.factor(test$Wilderness_Area1)
@@ -189,4 +189,4 @@ GBMpredTest = predict(GBMmodel, newdata = test[,x_vars])
 
 # Create file for submission
 submission = data.frame(Id = test$Id, Cover_Type = as.character(gsub("Seg", "", GBMpredTest)))
-write.csv(submission, "pred1.csv", row.names=FALSE)
+write.csv(submission, "pred2.csv", row.names=FALSE)
