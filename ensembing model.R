@@ -61,6 +61,8 @@ train$Cover_Type[train$Cover_Type == "7"] <- "Seg7"
 train$Cover_Type = as.factor(train$Cover_Type)
 x_vars = setdiff(names(train),c("Cover_Type"))
 
+# Parallel computing
+
 # GBM model
 library(caret)
 set.seed(1234)    
@@ -68,7 +70,7 @@ Grid <-  expand.grid(
     n.trees = c(1000),
     interaction.depth = c(22) ,
     shrinkage = 0.2)
-fitControl <- trainControl(method = "repeatedcv",10,allowParallel = T, classProbs = TRUE)
+fitControl <- trainControl(method = "cv",10,allowParallel = T, classProbs = TRUE)
 fit1 <- train(Cover_Type ~ ., data = train, method = "gbm", trControl = fitControl, verbose = TRUE,
                   tuneGrid = Grid, metric = "ROC")
 pred1 = predict(fit1, newdata = train)
