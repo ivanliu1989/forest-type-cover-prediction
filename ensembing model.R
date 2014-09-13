@@ -76,17 +76,25 @@ confusionMatrix(pred1, train$Cover_Type)
 
 # RF model
 set.seed(1234)
-tc <- trainControl("repeatedcv", 10, classProbs=TRUE, savePred=T) 
-fit2 <- train(Cover_Type ~ ., data = train, method = "rf", trControl = tc, verbose=T)
+tc <- trainControl("repeatedcv", 10, allowParallel = T, classProbs=TRUE, savePred=T) 
+fit2 <- train(Cover_Type ~ ., data = train, method = "rf", trControl = tc, verbose=T, prox=T)
 pred2 <- predict(fit2, newdata = train)
 confusionMatrix(pred2, train$Cover_Type)
+getTree(fit2$finalModel, 2)
+classCenter(x, label, prox)
+
 
 # NB model
 set.seed(1234)
-tc <- trainControl("repeatedcv", number=10, repeats=10, classProbs=TRUE, savePred=T) 
+tc <- trainControl("repeatedcv", 10, allowParallel = T,classProbs=TRUE, savePred=T) 
 fit3 <- train(Cover_Type ~ ., data = train, method = "nb", trControl = tc, verbose=T)
-pred3 <- predict(fit2, newdata = train)
+pred3 <- predict(fit3, newdata = train)
+confusionMatrix(pred3, train$Cover_Type)
 
+# Ensembling model
+ensemble.data <- data.frame(pred1,pred2,pred3,train)
+ensembleFit <- (Cover_Type~., data=ensemble.data, method='gam', verbose=T)
+ensemblePred <- predict(ensembleFit, newdata=train)
 gc()
 
 # test data
@@ -142,5 +150,5 @@ testPred2 = predict(fit2, newdata = test[,x_vars])
 testPred3 = predict(fit3, newdata = test[,x_vars])
 
 # Create file for submission
-submission = data.frame(Id = test$Id, Cover_Type = as.character(gsub("Seg", "", testPred2)))
-write.csv(submission, "predRF.csv", row.names=FALSE)
+submission = data.frame(Id = test$Id, Cover_Type = as.character(gsub("Seg", "", testPred3)))
+write.csv(submission, "predNB.csv", row.names=FALSE)
