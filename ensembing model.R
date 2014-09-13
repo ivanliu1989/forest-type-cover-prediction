@@ -68,10 +68,10 @@ Grid <-  expand.grid(
     n.trees = c(1000),
     interaction.depth = c(22) ,
     shrinkage = 0.2)
-fitControl <- trainControl(method = "none",allowParallel = T, classProbs = TRUE)
-GBMmodel <- train(Cover_Type ~ ., data = train, method = "gbm", trControl = fitControl, verbose = TRUE,
+fitControl <- trainControl(method = "repeatedcv",10,allowParallel = T, classProbs = TRUE)
+fit1 <- train(Cover_Type ~ ., data = train, method = "gbm", trControl = fitControl, verbose = TRUE,
                   tuneGrid = Grid, metric = "ROC")
-pred1 = predict(GBMmodel, newdata = train)
+pred1 = predict(fit1, newdata = train)
 confusionMatrix(pred1, train$Cover_Type)
 
 # RF model
@@ -94,7 +94,8 @@ confusionMatrix(pred3, train$Cover_Type)
 # Ensembling model
 ensemble.data <- data.frame(pred1,pred2,train)
 ensembleFit <- train(Cover_Type ~ ., data=ensemble.data, method='gam', verbose=T)
-ensemblePred <- predict(ensembleFit, newdata=train)
+ensemblePred <- predict(ensembleFit, newdata=ensemble.data)
+confusionMatrix(ensemblePred, train$Cover_Type)
 gc()
 
 # test data
