@@ -4,7 +4,7 @@
 ## Step 1: Data Preparation
 ###################################################
 
-setwd("/Users/ivan/Work_directory/forest-type-cover-prediction")
+setwd("C:\\Users\\Ivan.Liuyanfeng\\Desktop\\Data_Mining_Work_Space\\forest-type-cover-prediction")
 rm(list = ls(all = TRUE))
 gc()
 
@@ -111,7 +111,7 @@ Grid <-  expand.grid(
                     shrinkage = 0.2)
 
 # Define the parameters for cross validation
-fitControl <- trainControl(method = "none", classProbs = TRUE)
+fitControl <- trainControl(method = "repeatedcv",repeats = 10,allowParallel = T,number = 10, classProbs = TRUE)
 
 # Initialize randomization seed
 set.seed(1234)	
