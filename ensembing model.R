@@ -92,8 +92,8 @@ pred3 <- predict(fit3, newdata = train)
 confusionMatrix(pred3, train$Cover_Type)
 
 # Ensembling model
-ensemble.data <- data.frame(pred1,pred2,pred3,train)
-ensembleFit <- (Cover_Type~., data=ensemble.data, method='gam', verbose=T)
+ensemble.data <- data.frame(pred1,pred2,train)
+ensembleFit <- train(Cover_Type ~ ., data=ensemble.data, method='gam', verbose=T)
 ensemblePred <- predict(ensembleFit, newdata=train)
 gc()
 
