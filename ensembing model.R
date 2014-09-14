@@ -62,6 +62,7 @@ train$Cover_Type = as.factor(train$Cover_Type)
 x_vars = setdiff(names(train),c("Cover_Type"))
 
 # Parallel computing
+library(doParallel)
 
 # GBM model
 library(caret)
@@ -78,7 +79,7 @@ confusionMatrix(pred1, train$Cover_Type)
 
 # RF model
 set.seed(1234)
-tc <- trainControl("repeatedcv", 10, allowParallel = T, classProbs=TRUE, savePred=T) 
+tc <- trainControl("cv", 10, allowParallel = T, classProbs=TRUE, savePred=T) 
 fit2 <- train(Cover_Type ~ ., data = train, method = "rf", trControl = tc, verbose=T, prox=T)
 pred2 <- predict(fit2, newdata = train)
 confusionMatrix(pred2, train$Cover_Type)
@@ -88,7 +89,7 @@ classCenter(x, label, prox)
 
 # NB model
 set.seed(1234)
-tc <- trainControl("repeatedcv", 10, allowParallel = T,classProbs=TRUE, savePred=T) 
+tc <- trainControl("cv", 10, allowParallel = T,classProbs=TRUE, savePred=T) 
 fit3 <- train(Cover_Type ~ ., data = train, method = "nb", trControl = tc, verbose=T)
 pred3 <- predict(fit3, newdata = train)
 confusionMatrix(pred3, train$Cover_Type)
